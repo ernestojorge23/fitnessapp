@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness App</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: orange;
+        }
+        .menu-item {
+            transition: transform 0.3s ease;
+        }
+        .menu-item:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <div class="container mx-auto p-4">
+        <!-- Header -->
+        <header class="text-center py-4">
+            <h1 class="text-4xl font-bold">Fitness App</h1>
+            <nav class="mt-4">
+                <ul class="flex justify-center space-x-4">
+                    <li><a href="#tabla-ejercicios" class="menu-item">Tabla de Ejercicios</a></li>
+                    <li><a href="#alimentacion" class="menu-item">Alimentación</a></li>
+                    <li><a href="#foro" class="menu-item">Foro Fitness</a></li>
+                    <li><a href="#gimnasio" class="menu-item">Gimnasio</a></li>
+                    <li><a href="#cronometro" class="menu-item">Cronómetro</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Registro de Usuario -->
+        <section id="registro" class="my-8">
+            <h2 class="text-2xl font-bold mb-4">Registro</h2>
+            <form id="registroForm" class="space-y-4">
+                <input type="email" id="email" placeholder="Correo electrónico" class="w-full p-2 bg-gray-800 text-orange-500 rounded">
+                <input type="password" id="password" placeholder="Contraseña" class="w-full p-2 bg-gray-800 text-orange-500 rounded">
+                <button type="submit" class="w-full p-2 bg-orange-500 text-black rounded">Registrarse</button>
+            </form>
+        </section>
+
+        <!-- Tabla de Ejercicios -->
+        <section id="tabla-ejercicios" class="my-8">
+            <h2 class="text-2xl font-bold mb-4">Tabla de Ejercicios</h2>
+            <textarea id="rutina" placeholder="Escribe tu rutina semanal aquí..." class="w-full p-2 bg-gray-800 text-orange-500 rounded"></textarea>
+            <button onclick="darConsejos()" class="mt-2 p-2 bg-orange-500 text-black rounded">Obtener Consejos</button>
+            <div id="consejos" class="mt-4"></div>
+        </section>
+
+        <!-- Alimentación -->
+        <section id="alimentacion" class="my-8">
+            <h2 class="text-2xl font-bold mb-4">Alimentación</h2>
+            <form id="imcForm" class="space-y-4">
+                <input type="number" id="peso" placeholder="Peso (kg)" class="w-full p-2 bg-gray-800 text-orange-500 rounded">
+                <input type="number" id="altura" placeholder="Altura (cm)" class="w-full p-2 bg-gray-800 text-orange-500 rounded">
+                <input type="number" id="edad" placeholder="Edad" class="w-full p-2 bg-gray-800 text-orange-500 rounded">
+                <input type="text" id="alergias" placeholder="Alergias o intolerancias" class="w-full p-2 bg-gray-800 text-orange-500 rounded">
+                <button type="submit" class="w-full p-2 bg-orange-500 text-black rounded">Calcular IMC y Menú</button>
+            </form>
+            <div id="resultadoIMC" class="mt-4"></div>
+        </section>
+
+        <!-- Foro Fitness -->
+        <section id="foro" class="my-8">
+            <h2 class="text-2xl font-bold mb-4">Foro Fitness</h2>
+            <div id="foroPosts" class="space-y-4">
+                <!-- Posts dinámicos -->
+            </div>
+            <textarea id="nuevoPost" placeholder="Escribe tu post aquí..." class="w-full p-2 bg-gray-800 text-orange-500 rounded mt-4"></textarea>
+            <button onclick="publicarPost()" class="mt-2 p-2 bg-orange-500 text-black rounded">Publicar</button>
+        </section>
+
+        <!-- Gimnasio -->
+        <section id="gimnasio" class="my-8">
+            <h2 class="text-2xl font-bold mb-4">Gimnasio</h2>
+            <div id="gimnasios" class="space-y-4">
+                <!-- Gimnasios dinámicos -->
+            </div>
+        </section>
+
+        <!-- Cronómetro -->
+        <section id="cronometro" class="my-8">
+            <h2 class="text-2xl font-bold mb-4">Cronómetro</h2>
+            <div class="text-center">
+                <div id="cronometroDisplay" class="text-6xl">00:00:00</div>
+                <button onclick="iniciarCronometro()" class="mt-2 p-2 bg-orange-500 text-black rounded">Iniciar</button>
+                <button onclick="detenerCronometro()" class="mt-2 p-2 bg-orange-500 text-black rounded">Detener</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Registro de Usuario
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            alert(`Usuario registrado con correo: ${email}`);
+        });
+
+        // Consejos de Ejercicios
+        function darConsejos() {
+            const rutina = document.getElementById('rutina').value;
+            const consejos = `Consejos para tu rutina: ${rutina}. Intenta aumentar la intensidad gradualmente.`;
+            document.getElementById('consejos').innerText = consejos;
+        }
+
+        // Cálculo de IMC
+        document.getElementById('imcForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const peso = parseFloat(document.getElementById('peso').value);
+            const altura = parseFloat(document.getElementById('altura').value) / 100;
+            const imc = (peso / (altura * altura)).toFixed(2);
+            document.getElementById('resultadoIMC').innerText = `Tu IMC es: ${imc}`;
+        });
+
+        // Foro Fitness
+        function publicarPost() {
+            const post = document.getElementById('nuevoPost').value;
+            const postElement = document.createElement('div');
+            postElement.className = 'p-4 bg-gray-800 rounded';
+            postElement.innerText = post;
+            document.getElementById('foroPosts').appendChild(postElement);
+            document.getElementById('nuevoPost').value = '';
+        }
+
+        // Cronómetro
+        let cronometroInterval;
+        let tiempo = 0;
+        function iniciarCronometro() {
+            cronometroInterval = setInterval(() => {
+                tiempo++;
+                const horas = Math.floor(tiempo / 3600);
+                const minutos = Math.floor((tiempo % 3600) / 60);
+                const segundos = tiempo % 60;
+                document.getElementById('cronometroDisplay').innerText = 
+                    `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+            }, 1000);
+        }
+        function detenerCronometro() {
+            clearInterval(cronometroInterval);
+        }
+    </script>
+</body>
+</html>
